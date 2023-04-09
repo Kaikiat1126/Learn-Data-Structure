@@ -196,11 +196,27 @@ void layerOrder(Node* root) {
 }
 
 //递归法创建
-
+void createTree(Node** root)
+{
+	char userKey = 0;
+	scanf_s("%c", &userKey, 1);
+	if (userKey == '#') {
+		*root = NULL;
+	}
+	else 
+	{
+		*root = (Node*)malloc(sizeof(Node));
+		if (*root == NULL) return;
+		(*root)->data = userKey;
+		createTree(&(*root)->LeftChild);
+		createTree(&(*root)->RightChild);
+	}
+}
 
 int main()
 {
 	//创建
+	/*
 	Node* A = createNode('A');
 	Node* B = createNode('B');
 	Node* C = createNode('C');
@@ -208,12 +224,18 @@ int main()
 	Node* E = createNode('E');
 	Node* F = createNode('F');
 	Node* G = createNode('G');
-
+	
 	//连接
 	insertNode(A, B, C);
 	insertNode(B, D, E);
 	insertNode(C, NULL, F);
 	insertNode(F, G, NULL);
+	*/
+
+	Node* A = NULL;
+	createTree(&A);
+
+	
 	
 	printf("前序遍历：");
 	preOrder(A);
