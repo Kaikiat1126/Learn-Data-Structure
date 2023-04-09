@@ -31,11 +31,10 @@ void insertNode(Node* parent, Node* LeftChild, Node* RightChild) {
 	parent->RightChild = RightChild;
 }
 
-//遍历方式
-//递归遍历
+//Recursion Traversal
 void preOrder(Node* root)
 {
-	//根左右
+	//Root -> Left -> Right
 	if (root == NULL) return;
 	printf("%c ", root->data);
 	preOrder(root->LeftChild);
@@ -44,7 +43,7 @@ void preOrder(Node* root)
 
 void midOrder(Node* root)
 {
-	//左根右
+	//Left -> Root -> Right
 	if (root == NULL) return;
 	midOrder(root->LeftChild);
 	printf("%c ", root->data);
@@ -53,7 +52,7 @@ void midOrder(Node* root)
 
 void lastOrder(Node* root)
 {
-	//左右根
+	//Left -> Right -> Root
 	if (root == NULL) return;
 	lastOrder(root->LeftChild);
 	lastOrder(root->RightChild);
