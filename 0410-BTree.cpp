@@ -52,11 +52,17 @@ public:
 		node->count++;
 	}
 
+	// 分裂节点 Split Node
+	/*
+		：作用是在一个满节点上分裂出一个新的节点，以便保持 B-Tree 的平衡性和正确性
+	*/
 	void splitNode(int value, int* pvalue, int position, 
 		BTreeNode* node, BTreeNode* child, BTreeNode** newnode)
 	{
 		int median, j;
-
+		
+		// 根据当前节点是否大于最小值来确定分裂后两个节点的大小
+		// to split a new node on a full node in order to maintain the balance and correctness of the B-Tree
 		if (position > MIN)
 			median = MIN + 1;
 		else
@@ -66,13 +72,19 @@ public:
 		j = median + 1;
 		while (j <= MAX)
 		{
+			// 把当前节点后半部分的值和子节点移动到新节点
+			// Move the value of the second half of the current node and the child nodes to the new node
 			(*newnode)->value[j - median] = node->value[j];
 			(*newnode)->child[j - median] = node->child[j];
 			j++;
 		}
+		
+		// 更新当前节点的值个数
 		node->count = median;
+		// 更新新节点的值个数
 		(*newnode)->count = MAX - median;
 
+		// 决定插入到哪个节点中
 		if (position <= MIN)
 		{
 			addValueToNode(value, position, node, child);
@@ -81,7 +93,11 @@ public:
 		{
 			addValueToNode(value, position - median, *newnode, child);
 		}
+		// 记录下需要往上提升的值
 		*pvalue = node->value[node->count];
+		
+		// 把新节点的第一个子节点设为当前节点的最后一个子节点
+		// Set the first child of the new node to the last child of the current node
 		(*newnode)->child[0] = node->child[node->count];
 		node->count--;
 	}
@@ -167,7 +183,7 @@ public:
 		myNode->count--;
 	}
 
-	// 调整节点
+	// 调整节点 向右移动
 	void rightShift(BTreeNode* myNode, int position)
 	{
 		BTreeNode* x = myNode->child[position];
@@ -213,7 +229,7 @@ public:
 		return;
 	}
 
-	// 合并节点 merge nodes
+	// 合并子节点与其兄弟节点 merge nodes
 	void mergeLeaves(BTreeNode* myNode, int position)
 	{
 		int j = 1;
@@ -243,10 +259,15 @@ public:
 	}
 
 	// 调整节点 adjust the node
+	/*
+		在删除节点时维护B树的平衡,从而保证B树的性能
+		Maintain the balance of the B+ tree when deleting nodes, thus ensuring the performance of the B tree
+	*/
 	void adjustNode(BTreeNode* myNode, int position)
 	{
 		if (!position)
 		{
+			// 判断该子节点中是否存在足够的元素
 			if (myNode->child[1]->count > MIN)
 			{
 				leftShift(myNode, 1);
