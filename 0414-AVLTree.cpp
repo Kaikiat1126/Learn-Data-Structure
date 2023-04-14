@@ -30,7 +30,7 @@ private:
 	void deleteNode(AVLNode* node, int data);
 	AVLNode* minValueNode(AVLNode* node);
 	AVLNode* deleteNode(AVLNode* root, AVLNode* node);
-	void search(AVLNode* node, int data);
+	AVLNode* searchNode(AVLNode* node, int data);
 	void destroy(AVLNode* node);
 	
 public:
@@ -217,23 +217,6 @@ void AVLTree::deleteNode(int data)
 	deleteNode(root, data);
 }
 
-void AVLTree::deleteNode(AVLNode* node, int data)
-{
-	if (node == NULL)
-		return;
-
-	if (data < node->data)
-		deleteNode(node->left, data);
-	else if (data > node->data)
-		deleteNode(node->right, data);
-	else
-	{
-		AVLNode* temp = node;
-		node = deleteNode(root, node);
-		delete temp;
-	}
-}
-
 AVLNode* AVLTree::minValueNode(AVLNode* node)
 {
 	AVLNode* current = node;
@@ -311,7 +294,7 @@ AVLNode* AVLTree::deleteNode(AVLNode* root, AVLNode* node)
 	// Right Right Case
 	if (balance < -1 && getBalance(root->right) <= 0)
 		return leftRotate(root);
-	
+
 	// Right Left Case
 	if (balance < -1 && getBalance(root->right) > 0)
 	{
@@ -322,25 +305,36 @@ AVLNode* AVLTree::deleteNode(AVLNode* root, AVLNode* node)
 	return root;
 }
 
-void AVLTree::search(int data)
+void AVLTree::deleteNode(AVLNode* node, int data)
 {
-	search(root, data);
-}
-
-void AVLTree::search(AVLNode* node, int data)
-{
-	if (node == NULL)
+	AVLNode* temp = searchNode(node, data);
+	if (temp == NULL)
 	{
-		cout << "Value Not found" << endl << endl;
+		cout << "Node not found" << endl << endl;
 		return;
 	}
+	root = deleteNode(root, temp);
+	cout << "Node with value " << data << " deleted" << endl << endl;
+}
 
-	if (data < node->data)
-		search(node->left, data);
-	else if (data > node->data)
-		search(node->right, data);
+AVLNode* AVLTree::searchNode(AVLNode* node, int data)
+{
+	if (node == NULL || node->data == data)
+		return node;
+
+	if (node->data < data)
+		return searchNode(node->right, data);
+
+	return searchNode(node->left, data);
+}
+
+void AVLTree::search(int data)
+{
+	AVLNode* temp = searchNode(root, data);
+	if (temp == NULL)
+		cout << "Node with value " << data << " not found" << endl << endl;
 	else
-		cout << "Value Founded" << endl << endl;
+		cout << "Node with value " << data << " found" << endl << endl;
 }
 
 void AVLTree::destroy(AVLNode* node)
@@ -377,6 +371,7 @@ int main()
 		case 1:
 			cout << "Enter value to insert: ";
 			cin >> value;
+			cout << endl;
 			tree.insert(value);
 			break;
 		case 2:
