@@ -28,6 +28,7 @@ private:
 	void inOrder(AVLNode* node);
 	void postOrder(AVLNode* node);
 	void deleteNode(AVLNode* node, int data);
+	void printTree(AVLNode* node, int space);
 	AVLNode* minValueNode(AVLNode* node);
 	AVLNode* deleteNode(AVLNode* root, AVLNode* node);
 	AVLNode* searchNode(AVLNode* node, int data);
@@ -41,6 +42,8 @@ public:
 	void postOrder();
 	void deleteNode(int data);
 	void search(int data);
+	void getTreeHeight();
+	void printTree();
 	void destroy();
 };
 
@@ -172,12 +175,12 @@ void AVLTree::preOrder(AVLNode* node)
 		preOrder(node->left);
 		preOrder(node->right);
 	}
-	cout << endl;
 }
 
 void AVLTree::preOrder()
 {
 	preOrder(root);
+	cout << endl;
 }
 
 void AVLTree::inOrder(AVLNode* node)
@@ -188,12 +191,12 @@ void AVLTree::inOrder(AVLNode* node)
 		 cout << node->data << " ";
 		inOrder(node->right);
 	}
-	cout << endl;
 }
 
 void AVLTree::inOrder()
 {
 	inOrder(root);
+	cout << endl;
 }
 
 void AVLTree::postOrder(AVLNode* node)
@@ -204,12 +207,12 @@ void AVLTree::postOrder(AVLNode* node)
 		postOrder(node->right);
 		cout << node->data << " ";
 	}
-	cout << endl;
 }
 
 void AVLTree::postOrder()
 {
 	postOrder(root);
+	cout << endl;
 }
 
 void AVLTree::deleteNode(int data)
@@ -337,6 +340,29 @@ void AVLTree::search(int data)
 		cout << "Node with value " << data << " found" << endl << endl;
 }
 
+void AVLTree::printTree(AVLNode* node, int level)
+{
+	if (node != NULL)
+	{
+		printTree(node->right, level + 1);
+		for (int i = 0; i < level; i++)
+			cout << "   ";
+		cout << node->data << endl;
+		printTree(node->left, level + 1);
+	}
+}
+
+void AVLTree::printTree()
+{
+	printTree(root, 0);
+	cout << endl;
+}
+
+void AVLTree::getTreeHeight()
+{
+	cout << "Tree height: " << height(root) << endl << endl;
+}
+
 void AVLTree::destroy(AVLNode* node)
 {
 	if (node != NULL)
@@ -363,7 +389,9 @@ int main()
 		cout << "4. Preorder" <<  endl;
 		cout << "5. Inorder" <<  endl;
 		cout << "6. Postorder" <<  endl;
-		cout << "7. Exit" <<  endl;
+		cout << "7. Print tree" << endl;
+		cout << "8. Tree height" << endl;
+		cout << "9. Exit" <<  endl;
 		cout << "Enter your option: ";
 		cin >> option;
 		switch (option)
@@ -400,12 +428,19 @@ int main()
 			cout << endl << endl;
 			break;
 		case 7:
+			cout << "Tree: " << endl;
+			tree.printTree();
+			break;
+		case 8:
+			tree.getTreeHeight();
+			break;
+		case 9:
 			tree.destroy();
 			break;
 		default:
 			cout << "Invalid option" <<  endl;
 		}
-	} while (option != 7);
+	} while (option != 9);
 
 	return 0;
 }
