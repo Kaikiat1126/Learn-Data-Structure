@@ -6,4 +6,6 @@ Self learning alogorithm & data structure
 - Traversal with Stack & Queue
 - Traversal Order By Layer (BFS)
 
-## 0414-Learnig the basic of AVLTree
+## 0410-Learning the basic of B Tree and note taking 
+
+## 0414-Learning the basic of AVL Tree
