@@ -9,3 +9,5 @@ Self learning alogorithm & data structure
 ## 0410-Learning the basic of B Tree and note taking 
 
 ## 0414-Learning the basic of AVL Tree
+
+## 0424-Learning the basic of B+ Tree
